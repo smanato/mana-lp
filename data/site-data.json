@@ -1,0 +1,499 @@
+{
+  "updatedAt": "2026-04-04T08:10:04.841Z",
+  "program": {
+    "name": "まな式AIマネタイズ完全攻略プログラム",
+    "period": "2026年4月12日〜6月18日（約2ヶ月）",
+    "capacity": "30名限定",
+    "lectures": "全6回（生講義）",
+    "graduationCondition": "商品完成 → 販売導線完成 → 初売上（または初成約）"
+  },
+  "methods": [
+    {
+      "step": 1,
+      "title": "価値設計",
+      "description": "誰のどの痛みを、どんな変化に変えるか"
+    },
+    {
+      "step": 2,
+      "title": "商品設計",
+      "description": "商品コンセプト、内容、価格、提供形態"
+    },
+    {
+      "step": 3,
+      "title": "発信設計",
+      "description": "刺さる切り口・導線・投稿の役割分担"
+    },
+    {
+      "step": 4,
+      "title": "販売設計",
+      "description": "LP・オファー・特典・クロージング導線"
+    }
+  ],
+  "sessionTypes": [
+    {
+      "title": "セミナー（全6回）",
+      "details": [
+        {
+          "label": "形式",
+          "value": "生講義（Zoom）"
+        },
+        {
+          "label": "固定日時",
+          "value": "木曜 21:00（初回のみ4/12 日曜）"
+        },
+        {
+          "label": "内容",
+          "value": "その週にやるべきことの「正解」を提示。4設計メソッドに沿って段階的に進行"
+        }
+      ]
+    },
+    {
+      "title": "質問会（全6回）",
+      "details": [
+        {
+          "label": "形式",
+          "value": "質疑応答・相談（Zoom）"
+        },
+        {
+          "label": "固定日時",
+          "value": "金曜 13:00"
+        },
+        {
+          "label": "内容",
+          "value": "セミナー内容に関する質疑応答・相談の場"
+        },
+        {
+          "label": "備考",
+          "value": "旧名称「実装ワーク」から変更"
+        }
+      ]
+    },
+    {
+      "title": "レビュー（全6回）",
+      "details": [
+        {
+          "label": "形式",
+          "value": "Discord内で実施"
+        },
+        {
+          "label": "内容",
+          "value": "提出物の添削・フィードバック（公開添削）"
+        },
+        {
+          "label": "備考",
+          "value": "基本的にDiscord内で実施。他の人の添削も閲覧可能"
+        }
+      ]
+    },
+    {
+      "title": "Discordコミュニティ（常時）",
+      "details": [
+        {
+          "label": "",
+          "value": "質問はいつでもOK"
+        },
+        {
+          "label": "",
+          "value": "進捗報告テンプレ必須（サボれない仕組み）"
+        }
+      ]
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "title": "価値設計",
+      "deliverable": "マネタイズ設計書",
+      "sessions": [
+        {
+          "no": 1,
+          "date": "4/12",
+          "weekday": "日",
+          "time": "21:00",
+          "type": "セミナー①",
+          "kind": "seminar",
+          "topic": "第1回：市場と勝ち筋を決める（価値設計）"
+        },
+        {
+          "no": 2,
+          "date": "4/17",
+          "weekday": "金",
+          "time": "13:00",
+          "type": "質問会①",
+          "kind": "qa",
+          "topic": "価値設計に関する質疑応答・相談"
+        },
+        {
+          "no": 3,
+          "date": "4/24",
+          "weekday": "金",
+          "time": "-",
+          "type": "レビュー①",
+          "kind": "review",
+          "topic": "設計書の添削・フィードバック（Discord内）"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "商品設計",
+      "deliverable": "商品タイトル案 / 目次 / 販売ページ骨子",
+      "sessions": [
+        {
+          "no": 4,
+          "date": "4/23",
+          "weekday": "木",
+          "time": "21:00",
+          "type": "セミナー②",
+          "kind": "seminar",
+          "topic": "第2回：売れる商品を設計する（商品設計）"
+        },
+        {
+          "no": 5,
+          "date": "5/1",
+          "weekday": "金",
+          "time": "13:00",
+          "type": "質問会②",
+          "kind": "qa",
+          "topic": "商品設計に関する質疑応答・相談"
+        },
+        {
+          "no": 6,
+          "date": "5/8",
+          "weekday": "金",
+          "time": "-",
+          "type": "レビュー②",
+          "kind": "review",
+          "topic": "オファー設計の添削・フィードバック（Discord内）"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "発信設計",
+      "deliverable": "役割付き投稿30本 / 固定投稿",
+      "sessions": [
+        {
+          "no": 7,
+          "date": "5/7",
+          "weekday": "木",
+          "time": "21:00",
+          "type": "セミナー③",
+          "kind": "seminar",
+          "topic": "第3回：投稿を「売上目的」で再設計する（発信設計）"
+        },
+        {
+          "no": 8,
+          "date": "5/15",
+          "weekday": "金",
+          "time": "13:00",
+          "type": "質問会③",
+          "kind": "qa",
+          "topic": "発信設計に関する質疑応答・相談"
+        },
+        {
+          "no": 9,
+          "date": "5/22",
+          "weekday": "金",
+          "time": "-",
+          "type": "レビュー③",
+          "kind": "review",
+          "topic": "投稿・導線の添削・フィードバック（Discord内）"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "販売設計",
+      "deliverable": "note / Brain 有料部分完成",
+      "sessions": [
+        {
+          "no": 10,
+          "date": "5/14",
+          "weekday": "木",
+          "time": "21:00",
+          "type": "セミナー④",
+          "kind": "seminar",
+          "topic": "第4回：売れる販売ページを完成させる（販売設計）"
+        },
+        {
+          "no": 11,
+          "date": "5/29",
+          "weekday": "金",
+          "time": "13:00",
+          "type": "質問会④",
+          "kind": "qa",
+          "topic": "販売設計に関する質疑応答・相談"
+        },
+        {
+          "no": 12,
+          "date": "6/5",
+          "weekday": "金",
+          "time": "-",
+          "type": "レビュー④",
+          "kind": "review",
+          "topic": "販売ページの添削・フィードバック（Discord内）"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "AI×SNS仕組み化",
+      "deliverable": "AI×SNS運用マニュアル / 自動化フロー",
+      "sessions": [
+        {
+          "no": 13,
+          "date": "5/21",
+          "weekday": "木",
+          "time": "21:00",
+          "type": "セミナー⑤",
+          "kind": "seminar",
+          "topic": "第5回：AI×SNS運用を仕組み化する"
+        },
+        {
+          "no": 14,
+          "date": "6/5",
+          "weekday": "金",
+          "time": "13:00",
+          "type": "質問会⑤",
+          "kind": "qa",
+          "topic": "仕組み化に関する質疑応答・相談"
+        },
+        {
+          "no": 15,
+          "date": "6/12",
+          "weekday": "金",
+          "time": "-",
+          "type": "レビュー⑤",
+          "kind": "review",
+          "topic": "仕組み化の添削・フィードバック（Discord内）"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "ローンチ＆高単価",
+      "deliverable": "販売結果レポート / 高単価商品の企画書",
+      "sessions": [
+        {
+          "no": 16,
+          "date": "5/28",
+          "weekday": "木",
+          "time": "21:00",
+          "type": "セミナー⑥",
+          "kind": "seminar",
+          "topic": "第6回：ローンチ＆高単価商品設計"
+        },
+        {
+          "no": 17,
+          "date": "6/12",
+          "weekday": "金",
+          "time": "13:00",
+          "type": "質問会⑥",
+          "kind": "qa",
+          "topic": "ローンチ・高単価に関する質疑応答・相談"
+        },
+        {
+          "no": 18,
+          "date": "6/18",
+          "weekday": "木",
+          "time": "-",
+          "type": "レビュー⑥",
+          "kind": "review",
+          "topic": "最終レビュー＆卒業（Discord内）"
+        }
+      ]
+    }
+  ],
+  "curriculum": [
+    {
+      "sessionNo": 1,
+      "title": "市場と勝ち筋を決める（価値設計）",
+      "bullets": [
+        "稼げるテーマは「好き」ではなく「需要×支払い意欲×供給過多の回避」で決める",
+        "「誰の何をいくらで解決するか」を1行で言えるまで詰める",
+        "AI活用：ペルソナ深掘り / 競合リサーチ自動化 / 市場ニーズの言語化"
+      ],
+      "deliverable": "マネタイズ設計書"
+    },
+    {
+      "sessionNo": 2,
+      "title": "売れる商品を設計する（商品設計）",
+      "bullets": [
+        "商品を「内容」から作らない。「オファー（約束＋提供方法＋特典＋価格）」から作る",
+        "初回は必ず「売りやすい型」に寄せる（note/Brain/テンプレ/添削/壁打ち等）",
+        "AI活用：商品コンセプト案の大量生成 / 目次構成の自動作成 / 特典アイデア出し"
+      ],
+      "deliverable": "商品タイトル案 / 目次 / 販売ページ骨子"
+    },
+    {
+      "sessionNo": 3,
+      "title": "投稿を「売上目的」で再設計する（発信設計）",
+      "bullets": [
+        "投稿を3つの役割で使い分け",
+        "**集客投稿**: 興味を引いてフォロワーを増やす",
+        "**教育投稿**: 「これ必要だな」と気づかせる",
+        "**販売投稿**: 「今すぐ買おう」と行動させる",
+        "AI活用：バズ投稿の型分析 / 切り口の大量生成 / 投稿30本の一括作成"
+      ],
+      "deliverable": "役割付き投稿30本 / 固定投稿"
+    },
+    {
+      "sessionNo": 4,
+      "title": "売れる販売ページを完成させる（販売設計）",
+      "bullets": [
+        "「売れない」の原因は9割が販売ページ",
+        "noteとBrain両方の販売ページを完成させる",
+        "AI活用：セールスコピー生成 / 販売ページ全文の下書き作成 / ヘッドライン案の量産"
+      ],
+      "deliverable": "note / Brain 有料部分完成"
+    },
+    {
+      "sessionNo": 5,
+      "title": "AI×SNS運用を仕組み化する",
+      "bullets": [
+        "投稿作成・分析・改善のすべてをAIで回せる状態に仕上げる",
+        "属人性を残しつつ、作業時間を最小化（1日30分以下）",
+        "AI活用：投稿の自動生成ワークフロー構築 / エンゲージ分析の自動化"
+      ],
+      "deliverable": "AI×SNS運用マニュアル / 自動化フロー"
+    },
+    {
+      "sessionNo": 6,
+      "title": "ローンチ＆高単価商品設計",
+      "bullets": [
+        "販売データの読み方と改善方法",
+        "高単価商品（講座・コンサル等）の設計方法",
+        "低単価noteで安定収益 + 高単価商品で跳ね上げる「二段構えの収益構造」",
+        "AI活用：販売データの分析 / 改善ポイントの抽出 / 高額商品のコンセプト設計"
+      ],
+      "deliverable": "販売結果レポート / 高単価商品の企画書"
+    }
+  ],
+  "resources": [
+    {
+      "id": "resource-1",
+      "title": "マネタイズ設計書テンプレート",
+      "note": "第1回"
+    },
+    {
+      "id": "resource-2",
+      "title": "オファー設計シート",
+      "note": "第2回"
+    },
+    {
+      "id": "resource-3",
+      "title": "投稿設計テンプレート",
+      "note": "第3回"
+    },
+    {
+      "id": "resource-4",
+      "title": "販売ページ雛形",
+      "note": "第4回"
+    }
+  ],
+  "bonuses": [
+    {
+      "id": "bonus-1",
+      "title": "まなのプロンプト集・Skills集（随時追加）",
+      "description": "430万を生んだ現場のプロンプト"
+    },
+    {
+      "id": "bonus-2",
+      "title": "有料コンテンツ一式",
+      "description": "累計1,000万円以上の売上を生んだ設計図"
+    },
+    {
+      "id": "bonus-3",
+      "title": "過去コンテンツ全アーカイブ",
+      "description": "メンバーシップ提供分含む"
+    },
+    {
+      "id": "bonus-4",
+      "title": "AI×SNS自動化フロー",
+      "description": "第5回で提供、実稼働システムそのまま"
+    }
+  ],
+  "links": {
+    "discordUrl": "#",
+    "lineUrl": "#"
+  },
+  "imageSlots": {
+    "hero": {
+      "id": "hero",
+      "label": "メインビジュアル",
+      "note": "ウェルカムセクション",
+      "url": "",
+      "filename": "",
+      "updatedAt": null
+    },
+    "session-1": {
+      "id": "session-1",
+      "label": "第1回サムネイル",
+      "note": "価値設計",
+      "url": "",
+      "filename": "",
+      "updatedAt": null
+    },
+    "session-2": {
+      "id": "session-2",
+      "label": "第2回サムネイル",
+      "note": "商品設計",
+      "url": "",
+      "filename": "",
+      "updatedAt": null
+    },
+    "session-3": {
+      "id": "session-3",
+      "label": "第3回サムネイル",
+      "note": "発信設計",
+      "url": "",
+      "filename": "",
+      "updatedAt": null
+    },
+    "session-4": {
+      "id": "session-4",
+      "label": "第4回サムネイル",
+      "note": "販売設計",
+      "url": "",
+      "filename": "",
+      "updatedAt": null
+    },
+    "session-5": {
+      "id": "session-5",
+      "label": "第5回サムネイル",
+      "note": "AI×SNS仕組み化",
+      "url": "",
+      "filename": "",
+      "updatedAt": null
+    },
+    "session-6": {
+      "id": "session-6",
+      "label": "第6回サムネイル",
+      "note": "ローンチ＆高単価",
+      "url": "",
+      "filename": "",
+      "updatedAt": null
+    }
+  },
+  "progress": {
+    "completedSessionIds": [],
+    "updatedAt": null
+  },
+  "announcements": [
+    {
+      "id": "978e0b60-bc1d-4ade-b047-539c3dca2252",
+      "date": "2026/04/04",
+      "title": "会員サイトへようこそ",
+      "description": "最初にDiscordへ参加し、進捗報告テンプレートを確認してください。",
+      "badge": "NEW"
+    },
+    {
+      "id": "b084e717-4199-49bd-92f1-8a12f652e88e",
+      "date": "2026/04/04",
+      "title": "セミナーとレビュー中心で進めます",
+      "description": "各Moduleの成果物提出とDiscordレビューを軸に進行してください。",
+      "badge": "INFO"
+    }
+  ]
+}

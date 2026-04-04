@@ -1,0 +1,18 @@
+[
+  {
+    "id": "421ec467-1ef7-424d-83f8-77f953eceadf",
+    "username": "admin",
+    "name": "管理者",
+    "role": "admin",
+    "salt": "9921487c68f47631ae8dcaa7dda6cf2d",
+    "hash": "92bebe03494f97d62f441f51b04279dc0d079e8100f7ed01e2d429a24501a2b3c2319e047864325896a3f5927eb12bf35803cbcc0027ef34cddc12cbba502932"
+  },
+  {
+    "id": "cc1e5e22-0040-4ea1-938d-ce34f35bd0a2",
+    "username": "member",
+    "name": "受講生",
+    "role": "member",
+    "salt": "91ea187e93bec99f280faa7af696e64a",
+    "hash": "b22ec306babd9e91e1c9beecef9623d81186be58ed4e16c81a50e34cdab17972d19affbf565c4414ca02d1457457278920d177b39a440574684286bcae5caf64"
+  }
+]
