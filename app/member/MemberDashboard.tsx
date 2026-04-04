@@ -46,7 +46,7 @@ interface SiteData {
   }>;
   resources: Array<{ id: string; title: string; note: string }>;
   bonuses: Array<{ id: string; title: string; description: string }>;
-  links: { discordUrl: string; lineUrl: string };
+  links: { discordUrl: string; lineUrl: string; zoomUrl: string };
   imageSlots: ImageSlot[];
   progress: {
     completedSessionIds: number[];
@@ -264,6 +264,17 @@ export default function MemberDashboard({
                     </li>
                   ))}
                 </ul>
+                {t.title.includes("セミナー") && site.links.zoomUrl && (
+                  <a
+                    href={site.links.zoomUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn--primary"
+                    style={{ marginTop: 10, display: "inline-block", fontSize: 12 }}
+                  >
+                    Zoomで参加する
+                  </a>
+                )}
               </article>
             ))}
           </div>
@@ -302,7 +313,23 @@ export default function MemberDashboard({
                         <td>
                           <span className={badgeClass(s.kind)}>{s.type}</span>
                         </td>
-                        <td>{strip(s.topic)}</td>
+                        <td>
+                          {strip(s.topic)}
+                          {s.kind === "seminar" && site.links.zoomUrl && (
+                            <>
+                              {" "}
+                              <a
+                                href={site.links.zoomUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn btn--primary"
+                                style={{ fontSize: 11, padding: "4px 10px", marginLeft: 6 }}
+                              >
+                                Zoom参加
+                              </a>
+                            </>
+                          )}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -498,6 +525,7 @@ function AdminPanel({
         body: JSON.stringify({
           discordUrl: form.get("discordUrl"),
           lineUrl: form.get("lineUrl"),
+          zoomUrl: form.get("zoomUrl"),
         }),
       });
       flash("導線リンクを更新しました");
@@ -606,6 +634,15 @@ function AdminPanel({
                 name="lineUrl"
                 defaultValue={site.links.lineUrl}
                 placeholder="https://..."
+              />
+            </label>
+            <label className="form-field">
+              <span>Zoom URL（セミナー用）</span>
+              <input
+                type="url"
+                name="zoomUrl"
+                defaultValue={site.links.zoomUrl}
+                placeholder="https://zoom.us/..."
               />
             </label>
             <button type="submit" className="btn btn--secondary">

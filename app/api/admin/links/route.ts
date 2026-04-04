@@ -15,9 +15,10 @@ export async function PUT(req: NextRequest) {
   const body = await req.json().catch(() => ({}));
   const discordUrl = normalizeUrl(body.discordUrl);
   const lineUrl = normalizeUrl(body.lineUrl);
+  const zoomUrl = normalizeUrl(body.zoomUrl);
 
   const siteData = loadSiteData();
-  siteData.links = { discordUrl, lineUrl };
+  siteData.links = { discordUrl, lineUrl, zoomUrl };
   const saved = saveSiteData(siteData);
 
   return NextResponse.json({

@@ -54,7 +54,7 @@ export interface SiteData {
   }>;
   resources: Array<{ id: string; title: string; note: string }>;
   bonuses: Array<{ id: string; title: string; description: string }>;
-  links: { discordUrl: string; lineUrl: string };
+  links: { discordUrl: string; lineUrl: string; zoomUrl: string };
   imageSlots: Record<string, ImageSlot>;
   progress: {
     completedSessionIds: number[];
@@ -174,7 +174,7 @@ export function loadSiteData(): SiteData {
     raw.announcements = defaultAnnouncements();
   }
   if (!raw.links) {
-    raw.links = { discordUrl: "#", lineUrl: "#" };
+    raw.links = { discordUrl: "#", lineUrl: "#", zoomUrl: "" };
   }
   if (!raw.progress) {
     raw.progress = { completedSessionIds: [], updatedAt: null };

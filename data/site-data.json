@@ -38,8 +38,8 @@
           "value": "生講義（Zoom）"
         },
         {
-          "label": "固定日時",
-          "value": "木曜 21:00（初回のみ4/12 日曜）"
+          "label": "日時",
+          "value": "スケジュール表を確認（変更の場合あり）"
         },
         {
           "label": "内容",
@@ -55,8 +55,8 @@
           "value": "質疑応答・相談（Zoom）"
         },
         {
-          "label": "固定日時",
-          "value": "金曜 13:00"
+          "label": "日時",
+          "value": "スケジュール表を確認（変更の場合あり）"
         },
         {
           "label": "内容",
@@ -416,7 +416,8 @@
   ],
   "links": {
     "discordUrl": "#",
-    "lineUrl": "#"
+    "lineUrl": "#",
+    "zoomUrl": "https://us06web.zoom.us/j/4150376612?pwd=ak23D3bjS959aQvmxw0o97VsdHPKnW.1"
   },
   "imageSlots": {
     "hero": {
