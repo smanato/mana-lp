@@ -209,12 +209,10 @@ export default function MemberDashboard({ initialUser }: { initialUser: User }) 
               <p className="hero__desc">
                 セミナーとレビューを軸に、毎週の実装を積み上げて成果物完成まで進めます。
               </p>
-              <div className="meta-grid">
+              <div className="meta-grid" style={{ gridTemplateColumns: "1fr 1fr" }}>
                 {([
                   ["期間", program.period],
                   ["講義", program.lectures],
-                  ["定員", program.capacity],
-                  ["卒業条件", program.graduationCondition],
                 ] as const).map(([label, value]) => (
                   <div className="meta-item" key={label}>
                     <p>{label}</p>
