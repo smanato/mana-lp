@@ -8,3 +8,4 @@ uploads/*
 .aidesigner/*
 !.aidesigner/.gitkeep
 .claude/worktrees/
+scripts/

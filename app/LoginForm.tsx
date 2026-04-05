@@ -7,7 +7,6 @@ export default function LoginForm() {
   const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [imgError, setImgError] = useState(false);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -46,37 +45,27 @@ export default function LoginForm() {
 
   return (
     <section className="auth-card">
-      {!imgError && (
-        <picture>
+      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
+        <div style={{ position: 'relative' }}>
+          <div style={{ position: 'absolute', inset: -8, borderRadius: 24, background: 'linear-gradient(135deg, rgba(220,38,38,0.12), rgba(217,119,6,0.08))', filter: 'blur(12px)' }} />
           <img
             src="/robot-icon.png"
             alt=""
             onError={(e) => {
               const el = e.target as HTMLImageElement;
-              if (el.src.endsWith(".png")) {
-                el.src = "/robot-icon.svg";
-              } else {
-                setImgError(true);
-              }
+              if (el.src.endsWith('.png')) { el.src = '/robot-icon.svg'; }
+              else { el.parentElement!.parentElement!.style.display = 'none'; }
             }}
-            style={{
-              width: 80,
-              height: 80,
-              margin: "0 auto 16px",
-              borderRadius: 16,
-              boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
-              objectFit: "cover",
-              display: "block",
-            }}
+            style={{ position: 'relative', width: 96, height: 96, borderRadius: 20, objectFit: 'cover', boxShadow: '0 8px 24px rgba(0,0,0,0.08)' }}
           />
-        </picture>
-      )}
+        </div>
+      </div>
 
-      <p className="auth-card__tag">会員サイトログイン</p>
-
-      <h1 className="auth-card__title">
+      <h1 className="auth-card__title gradient-text">
         まな式AIマネタイズ完全攻略プログラム
       </h1>
+
+      <p className="auth-card__tag">会員サイトログイン</p>
 
       <p className="auth-card__desc">
         セミナー・レビュー・教材を会員専用で管理します。ログインして受講を開始してください。
@@ -90,6 +79,7 @@ export default function LoginForm() {
             type="text"
             required
             placeholder="ユーザー名を入力"
+            autoComplete="username"
           />
         </label>
 
@@ -100,6 +90,7 @@ export default function LoginForm() {
             type="password"
             required
             placeholder="パスワードを入力"
+            autoComplete="current-password"
           />
         </label>
 
@@ -108,14 +99,18 @@ export default function LoginForm() {
           className="btn btn--primary"
           disabled={loading}
           style={{
-            width: "100%",
-            padding: "14px",
-            marginTop: 4,
-            opacity: loading ? 0.75 : 1,
-            transition: "opacity 0.2s ease",
+            width: '100%',
+            padding: '14px',
+            marginTop: 8,
+            background: 'linear-gradient(135deg, #DC2626, #e64a3a)',
+            boxShadow: '0 4px 16px rgba(220,38,38,0.25)',
+            fontSize: 15,
+            letterSpacing: '0.02em',
+            opacity: loading ? 0.8 : 1,
+            transition: 'opacity 0.2s ease',
           }}
         >
-          {loading ? "ログイン中..." : "ログイン"}
+          {loading ? "Loading..." : "ログイン"}
         </button>
 
         {error && (
@@ -129,6 +124,10 @@ export default function LoginForm() {
           </p>
         )}
       </form>
+
+      <p style={{ textAlign: 'center', marginTop: 24, fontSize: 12, color: '#94A3B8' }}>
+        Powered by まな式AIマネタイズ
+      </p>
     </section>
   );
 }
