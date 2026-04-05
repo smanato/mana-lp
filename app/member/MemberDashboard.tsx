@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef, FormEvent } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 /* ------------------------------------------------------------------ */
@@ -63,6 +63,23 @@ interface SiteData {
     title: string;
     description: string;
     badge: string;
+  }>;
+  archives: Array<{
+    id: string;
+    sessionNo: number;
+    title: string;
+    youtubeUrl: string;
+    date: string;
+    duration: string;
+    createdAt: string;
+  }>;
+  documents: Array<{
+    id: string;
+    title: string;
+    description: string;
+    url: string;
+    category: string;
+    createdAt: string;
   }>;
 }
 
@@ -325,6 +342,11 @@ export default function MemberDashboard({
           >
             ログアウト
           </button>
+          {isAdmin && (
+            <a href="/admin" className="btn btn--secondary" style={{ padding: '6px 14px', fontSize: 13 }}>
+              管理画面
+            </a>
+          )}
         </div>
       </header>
 
@@ -656,6 +678,76 @@ export default function MemberDashboard({
           </div>
         </section>
 
+        {/* ── Archives ─────────────────────────────── */}
+        {site.archives && site.archives.length > 0 && (
+          <section className="panel reveal">
+            <h2 className="panel__title">セミナーアーカイブ</h2>
+            <div className="curriculum-grid reveal-stagger">
+              {site.archives.map((archive) => {
+                // Extract YouTube video ID for thumbnail
+                const videoId = archive.youtubeUrl?.match(/(?:youtu\.be\/|v=)([^&?]+)/)?.[1] || "";
+                return (
+                  <article className="curriculum-card" key={archive.id}>
+                    <div className="curriculum-card__media" style={{ position: 'relative', minHeight: 180 }}>
+                      {videoId ? (
+                        <a href={archive.youtubeUrl} target="_blank" rel="noopener noreferrer">
+                          <img
+                            src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
+                            alt={archive.title}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                          />
+                          <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.15)' }}>
+                            <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'rgba(220,38,38,0.9)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                              <div style={{ width: 0, height: 0, borderLeft: '18px solid white', borderTop: '11px solid transparent', borderBottom: '11px solid transparent', marginLeft: 4 }} />
+                            </div>
+                          </div>
+                        </a>
+                      ) : (
+                        <div className="placeholder">サムネイル未取得</div>
+                      )}
+                    </div>
+                    <div className="curriculum-card__body">
+                      <h3>{archive.title}</h3>
+                      <p style={{ display: 'flex', gap: 12, marginTop: 8, fontSize: 12, color: '#94A3B8' }}>
+                        <span>{archive.date}</span>
+                        {archive.duration && <span>{archive.duration}</span>}
+                      </p>
+                      <a href={archive.youtubeUrl} target="_blank" rel="noopener noreferrer"
+                        className="btn btn--zoom" style={{ marginTop: 12, display: 'inline-flex' }}>
+                        アーカイブを視聴する
+                      </a>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
+        {/* ── Documents ───────────────────────────── */}
+        {site.documents && site.documents.length > 0 && (
+          <section className="panel reveal">
+            <h2 className="panel__title">配布資料</h2>
+            <div className="resource-stack reveal-stagger">
+              {site.documents.map((doc) => (
+                <article className="resource-item" key={doc.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div>
+                    <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 4 }}>
+                      <span className="badge badge--qa" style={{ fontSize: 10 }}>{doc.category}</span>
+                      <h3>{doc.title}</h3>
+                    </div>
+                    <p>{doc.description}</p>
+                  </div>
+                  <a href={doc.url} target="_blank" rel="noopener noreferrer"
+                    className="btn btn--secondary" style={{ flexShrink: 0, fontSize: 12, padding: '6px 14px' }}>
+                    開く
+                  </a>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* ── Support ──────────────────────────────── */}
         <section className="panel panel--support reveal">
           <h2 className="panel__title">サポート導線</h2>
@@ -703,285 +795,8 @@ export default function MemberDashboard({
           </div>
         </section>
 
-        {/* ── Admin Panel ──────────────────────────── */}
-        {isAdmin && <AdminPanel site={site} flash={flash} reload={loadSite} />}
       </div>
     </>
   );
 }
 
-/* ================================================================== */
-/*  ADMIN PANEL                                                        */
-/* ================================================================== */
-
-function AdminPanel({
-  site,
-  flash,
-  reload,
-}: {
-  site: SiteData;
-  flash: (t: string, k?: string) => void;
-  reload: () => Promise<void>;
-}) {
-  const doneSet = new Set(site.progress.completedSessionIds);
-
-  /* ── Progress Update ── */
-
-  async function handleProgress(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const form = new FormData(e.currentTarget);
-    const ids = form
-      .getAll("completedSessionIds")
-      .map((v) => parseInt(String(v), 10));
-    try {
-      await api("/api/admin/progress", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ completedSessionIds: ids }),
-      });
-      flash("進捗を更新しました");
-      reload();
-    } catch (err) {
-      flash(err instanceof Error ? err.message : "失敗", "error");
-    }
-  }
-
-  /* ── Links Update ── */
-
-  async function handleLinks(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const form = new FormData(e.currentTarget);
-    try {
-      await api("/api/admin/links", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          discordUrl: form.get("discordUrl"),
-          lineUrl: form.get("lineUrl"),
-          zoomUrl: form.get("zoomUrl"),
-        }),
-      });
-      flash("導線リンクを更新しました");
-      reload();
-    } catch (err) {
-      flash(err instanceof Error ? err.message : "失敗", "error");
-    }
-  }
-
-  /* ── Announcement Create ── */
-
-  async function handleAnnouncement(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const form = new FormData(e.currentTarget);
-    try {
-      await api("/api/admin/announcements", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: form.get("title"),
-          description: form.get("description"),
-          badge: form.get("badge"),
-        }),
-      });
-      e.currentTarget.reset();
-      flash("お知らせを追加しました");
-      reload();
-    } catch (err) {
-      flash(err instanceof Error ? err.message : "失敗", "error");
-    }
-  }
-
-  /* ── Image URL Update ── */
-
-  async function handleImageUrl(e: FormEvent<HTMLFormElement>, slotId: string) {
-    e.preventDefault();
-    const form = new FormData(e.currentTarget);
-    try {
-      await api("/api/admin/images", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ slotId, url: form.get("url") }),
-      });
-      flash(`${slotId} の画像URLを更新しました`);
-      reload();
-    } catch (err) {
-      flash(err instanceof Error ? err.message : "失敗", "error");
-    }
-  }
-
-  /* ── Image Clear ── */
-
-  async function clearImage(slotId: string) {
-    try {
-      await api(
-        `/api/admin/images?slotId=${encodeURIComponent(slotId)}`,
-        { method: "DELETE" }
-      );
-      flash(`${slotId} の画像を削除しました`);
-      reload();
-    } catch (err) {
-      flash(err instanceof Error ? err.message : "失敗", "error");
-    }
-  }
-
-  /* ── Render ── */
-
-  return (
-    <section
-      className="panel reveal"
-      style={{
-        borderTop: "4px solid transparent",
-        borderImage: "linear-gradient(90deg, #DC2626, #D97706) 1",
-      }}
-    >
-      <h2 className="panel__title">管理パネル</h2>
-      <div className="admin-layout">
-        {/* Progress */}
-        <section className="admin-card">
-          <h3>進捗更新</h3>
-          <form onSubmit={handleProgress}>
-            <div className="checkbox-grid">
-              {site.curriculum.map((item) => (
-                <label key={item.sessionNo}>
-                  <input
-                    type="checkbox"
-                    name="completedSessionIds"
-                    value={item.sessionNo}
-                    defaultChecked={doneSet.has(item.sessionNo)}
-                  />
-                  第{item.sessionNo}回
-                </label>
-              ))}
-            </div>
-            <div className="form-inline" style={{ marginTop: 12 }}>
-              <button type="submit" className="btn btn--primary">
-                進捗を保存
-              </button>
-            </div>
-          </form>
-        </section>
-
-        {/* Links */}
-        <section className="admin-card">
-          <h3>導線リンク更新</h3>
-          <form className="form-stack" onSubmit={handleLinks}>
-            <label className="form-field">
-              <span>Discord URL</span>
-              <input
-                type="url"
-                name="discordUrl"
-                defaultValue={site.links.discordUrl}
-                placeholder="https://..."
-              />
-            </label>
-            <label className="form-field">
-              <span>公式LINE URL</span>
-              <input
-                type="url"
-                name="lineUrl"
-                defaultValue={site.links.lineUrl}
-                placeholder="https://..."
-              />
-            </label>
-            <label className="form-field">
-              <span>Zoom URL（セミナー用）</span>
-              <input
-                type="url"
-                name="zoomUrl"
-                defaultValue={site.links.zoomUrl}
-                placeholder="https://zoom.us/..."
-              />
-            </label>
-            <button type="submit" className="btn btn--secondary">
-              リンクを保存
-            </button>
-          </form>
-        </section>
-
-        {/* Image Slots */}
-        <section className="admin-card">
-          <h3>画像URL設定（7箇所）</h3>
-          <div className="upload-grid">
-            {site.imageSlots.map((slot) => (
-              <article className="upload-item" key={slot.id}>
-                <strong style={{ fontSize: 13, color: "#111827" }}>
-                  {slot.label}
-                </strong>
-                <p>{slot.note}</p>
-                {slot.url ? (
-                  <img src={slot.url} alt={slot.label} />
-                ) : (
-                  <div className="placeholder">未設定</div>
-                )}
-                <form
-                  onSubmit={(e) => handleImageUrl(e, slot.id)}
-                  className="form-stack"
-                  style={{ marginTop: 8 }}
-                >
-                  <input
-                    type="url"
-                    name="url"
-                    placeholder="画像URL (https://...)"
-                    defaultValue={slot.url || ""}
-                    style={{
-                      width: "100%",
-                      padding: "8px 12px",
-                      border: "1px solid #d1d5db",
-                      borderRadius: 8,
-                      background: "#fff",
-                      color: "#111827",
-                      font: "inherit",
-                      fontSize: 12,
-                    }}
-                  />
-                  <div className="form-inline">
-                    <button
-                      type="submit"
-                      className="btn btn--secondary"
-                      style={{ fontSize: 12, padding: "6px 12px" }}
-                    >
-                      設定
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn--danger"
-                      style={{ fontSize: 12, padding: "6px 12px" }}
-                      onClick={() => clearImage(slot.id)}
-                    >
-                      削除
-                    </button>
-                  </div>
-                </form>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        {/* Announcements */}
-        <section className="admin-card">
-          <h3>お知らせ追加</h3>
-          <form className="form-stack" onSubmit={handleAnnouncement}>
-            <label className="form-field">
-              <span>タイトル</span>
-              <input type="text" name="title" required maxLength={120} />
-            </label>
-            <label className="form-field">
-              <span>本文</span>
-              <textarea name="description" required maxLength={500} />
-            </label>
-            <label className="form-field">
-              <span>バッジ</span>
-              <select name="badge">
-                <option value="NEW">NEW</option>
-                <option value="INFO">INFO</option>
-              </select>
-            </label>
-            <button type="submit" className="btn btn--primary">
-              お知らせを追加
-            </button>
-          </form>
-        </section>
-      </div>
-    </section>
-  );
-}

@@ -24,6 +24,25 @@ export interface Announcement {
   badge: "NEW" | "INFO";
 }
 
+export interface Archive {
+  id: string;
+  sessionNo: number;
+  title: string;
+  youtubeUrl: string;
+  date: string;
+  duration: string;
+  createdAt: string;
+}
+
+export interface Document {
+  id: string;
+  title: string;
+  description: string;
+  url: string;
+  category: string; // "template" | "slide" | "worksheet" | "other"
+  createdAt: string;
+}
+
 export interface SiteData {
   updatedAt: string;
   program: Record<string, string>;
@@ -61,6 +80,8 @@ export interface SiteData {
     updatedAt: string | null;
   };
   announcements: Announcement[];
+  archives: Archive[];
+  documents: Document[];
 }
 
 export interface UserRecord {
@@ -179,6 +200,12 @@ export function loadSiteData(): SiteData {
   if (!raw.progress) {
     raw.progress = { completedSessionIds: [], updatedAt: null };
   }
+  if (!Array.isArray(raw.archives)) {
+    raw.archives = [];
+  }
+  if (!Array.isArray(raw.documents)) {
+    raw.documents = [];
+  }
 
   cachedSiteData = raw;
   return raw;
@@ -219,6 +246,8 @@ export function buildSiteResponse(siteData: SiteData) {
           : 0,
     },
     announcements: siteData.announcements,
+    archives: siteData.archives,
+    documents: siteData.documents,
     updatedAt: siteData.updatedAt,
   };
 }
