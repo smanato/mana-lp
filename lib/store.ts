@@ -196,6 +196,29 @@ function defaultAnnouncements(): Announcement[] {
   ];
 }
 
+function defaultDocuments(): Document[] {
+  return [
+    {
+      id: "default-gdrive-materials",
+      title: "教材・資料フォルダ（Google Drive）",
+      description:
+        "まな式AIマネタイズ完全攻略プログラムの教材・テンプレート・ワークシート一式。常に最新版にアップデートされます。",
+      url: "https://drive.google.com/drive/folders/1Ar6qMZF3L97d5YTwLHegX4Kk8VwQ1TSZ",
+      category: "template",
+      createdAt: "2026-04-05T00:00:00.000Z",
+    },
+    {
+      id: "default-gpts-notion",
+      title: "特典GPTs集（Notion）",
+      description:
+        "受講生限定で使えるGPTsをNotionでまとめました。価値設計・商品設計・発信設計・販売設計をサポート。",
+      url: "https://foam-violet-8b3.notion.site/GPTs-337eb03cfae180d5921cfb55b3f934b6?source=copy_link",
+      category: "other",
+      createdAt: "2026-04-05T00:00:00.000Z",
+    },
+  ];
+}
+
 function applyDefaults(raw: SiteData): SiteData {
   if (
     !raw.announcements ||
@@ -215,6 +238,11 @@ function applyDefaults(raw: SiteData): SiteData {
   }
   if (!Array.isArray(raw.documents)) {
     raw.documents = [];
+  }
+  // Seed default documents (Google Drive + Notion GPTs)
+  // only when the array is empty (first run or fresh Redis)
+  if (raw.documents.length === 0) {
+    raw.documents = defaultDocuments();
   }
   return raw;
 }
