@@ -4,8 +4,31 @@ import crypto from "crypto";
 import { hashPassword } from "./auth";
 
 const DATA_DIR = path.join(process.cwd(), "data");
-const SITE_DATA_FILE = path.join(DATA_DIR, "site-data.json");
+const SITE_DATA_FILE_SRC = path.join(DATA_DIR, "site-data.json");
 const USERS_FILE = path.join(DATA_DIR, "users.json");
+
+// Vercel serverless: /tmp is writable, project dir is read-only.
+// On first load, copy site-data.json to /tmp for read-write access.
+const TMP_SITE_DATA = path.join("/tmp", "site-data.json");
+
+function getSiteDataFile(): string {
+  // If /tmp copy exists and is newer, use it
+  try {
+    fs.statSync(TMP_SITE_DATA);
+    return TMP_SITE_DATA;
+  } catch {
+    // First run: copy source to /tmp
+    try {
+      const src = fs.readFileSync(SITE_DATA_FILE_SRC, "utf-8");
+      fs.writeFileSync(TMP_SITE_DATA, src, "utf-8");
+      return TMP_SITE_DATA;
+    } catch {
+      return SITE_DATA_FILE_SRC;
+    }
+  }
+}
+
+const SITE_DATA_FILE = getSiteDataFile();
 
 export interface ImageSlot {
   id: string;
@@ -179,8 +202,7 @@ function defaultAnnouncements(): Announcement[] {
 }
 
 export function loadSiteData(): SiteData {
-  if (cachedSiteData) return cachedSiteData;
-
+  // Always re-read from disk to pick up cross-request writes in /tmp
   const raw = readJson<SiteData | null>(SITE_DATA_FILE, null);
   if (!raw) {
     throw new Error("site-data.json not found");
@@ -214,10 +236,16 @@ export function loadSiteData(): SiteData {
 export function saveSiteData(data: SiteData): SiteData {
   data.updatedAt = new Date().toISOString();
   cachedSiteData = data;
+  // Always write to /tmp first (writable on Vercel), then try source
+  try {
+    writeJson(TMP_SITE_DATA, data);
+  } catch {
+    // ignore
+  }
   try {
     writeJson(SITE_DATA_FILE, data);
   } catch {
-    // Vercel read-only FS: cache-only
+    // Vercel read-only FS: /tmp write above handles persistence
   }
   return data;
 }
