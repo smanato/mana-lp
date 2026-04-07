@@ -23,7 +23,7 @@ export async function PUT(req: NextRequest) {
     );
   }
 
-  const siteData = loadSiteData();
+  const siteData = await loadSiteData();
   const slot = siteData.imageSlots[slotId];
 
   if (!slot) {
@@ -39,7 +39,7 @@ export async function PUT(req: NextRequest) {
     updatedAt: new Date().toISOString(),
   };
 
-  const saved = saveSiteData(siteData);
+  const saved = await saveSiteData(siteData);
   return NextResponse.json({
     message: "画像URLを更新しました",
     slot: saved.imageSlots[slotId],
@@ -59,7 +59,7 @@ export async function DELETE(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const slotId = searchParams.get("slotId") || "";
 
-  const siteData = loadSiteData();
+  const siteData = await loadSiteData();
   const slot = siteData.imageSlots[slotId];
 
   if (!slot) {
@@ -76,7 +76,7 @@ export async function DELETE(req: NextRequest) {
     updatedAt: new Date().toISOString(),
   };
 
-  const saved = saveSiteData(siteData);
+  const saved = await saveSiteData(siteData);
   return NextResponse.json({
     message: "画像を削除しました",
     slot: saved.imageSlots[slotId],

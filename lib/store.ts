@@ -1,34 +1,29 @@
 import fs from "fs";
 import path from "path";
 import crypto from "crypto";
+import { Redis } from "@upstash/redis";
 import { hashPassword } from "./auth";
 
 const DATA_DIR = path.join(process.cwd(), "data");
-const SITE_DATA_FILE_SRC = path.join(DATA_DIR, "site-data.json");
+const SITE_DATA_FILE = path.join(DATA_DIR, "site-data.json");
 const USERS_FILE = path.join(DATA_DIR, "users.json");
 
-// Vercel serverless: /tmp is writable, project dir is read-only.
-// On first load, copy site-data.json to /tmp for read-write access.
-const TMP_SITE_DATA = path.join("/tmp", "site-data.json");
+// ─────────────────────────────────────────────────────
+// Persistence strategy:
+// - If UPSTASH_REDIS_REST_URL + TOKEN env vars are set → use Redis (Vercel prod)
+// - Otherwise → use local JSON file (dev/fallback)
+// ─────────────────────────────────────────────────────
+const REDIS_KEY_SITE = "mana-lp:site-data:v1";
 
-function getSiteDataFile(): string {
-  // If /tmp copy exists and is newer, use it
-  try {
-    fs.statSync(TMP_SITE_DATA);
-    return TMP_SITE_DATA;
-  } catch {
-    // First run: copy source to /tmp
-    try {
-      const src = fs.readFileSync(SITE_DATA_FILE_SRC, "utf-8");
-      fs.writeFileSync(TMP_SITE_DATA, src, "utf-8");
-      return TMP_SITE_DATA;
-    } catch {
-      return SITE_DATA_FILE_SRC;
-    }
-  }
+let redisClient: Redis | null = null;
+function getRedis(): Redis | null {
+  if (redisClient) return redisClient;
+  const url = process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  if (!url || !token) return null;
+  redisClient = new Redis({ url, token });
+  return redisClient;
 }
-
-const SITE_DATA_FILE = getSiteDataFile();
 
 export interface ImageSlot {
   id: string;
@@ -201,14 +196,7 @@ function defaultAnnouncements(): Announcement[] {
   ];
 }
 
-export function loadSiteData(): SiteData {
-  // Always re-read from disk to pick up cross-request writes in /tmp
-  const raw = readJson<SiteData | null>(SITE_DATA_FILE, null);
-  if (!raw) {
-    throw new Error("site-data.json not found");
-  }
-
-  // Ensure defaults
+function applyDefaults(raw: SiteData): SiteData {
   if (
     !raw.announcements ||
     !Array.isArray(raw.announcements) ||
@@ -228,24 +216,62 @@ export function loadSiteData(): SiteData {
   if (!Array.isArray(raw.documents)) {
     raw.documents = [];
   }
-
-  cachedSiteData = raw;
   return raw;
 }
 
-export function saveSiteData(data: SiteData): SiteData {
+export async function loadSiteData(): Promise<SiteData> {
+  const redis = getRedis();
+
+  // Redis path (production)
+  if (redis) {
+    try {
+      const stored = await redis.get<SiteData>(REDIS_KEY_SITE);
+      if (stored) {
+        cachedSiteData = applyDefaults(stored);
+        return cachedSiteData;
+      }
+      // Seed Redis from file on first run
+      const seed = readJson<SiteData | null>(SITE_DATA_FILE, null);
+      if (seed) {
+        const withDefaults = applyDefaults(seed);
+        await redis.set(REDIS_KEY_SITE, withDefaults);
+        cachedSiteData = withDefaults;
+        return withDefaults;
+      }
+    } catch (e) {
+      console.error("Redis load failed, falling back to file:", e);
+    }
+  }
+
+  // File path (dev/fallback)
+  const raw = readJson<SiteData | null>(SITE_DATA_FILE, null);
+  if (!raw) {
+    throw new Error("site-data.json not found");
+  }
+  const withDefaults = applyDefaults(raw);
+  cachedSiteData = withDefaults;
+  return withDefaults;
+}
+
+export async function saveSiteData(data: SiteData): Promise<SiteData> {
   data.updatedAt = new Date().toISOString();
   cachedSiteData = data;
-  // Always write to /tmp first (writable on Vercel), then try source
-  try {
-    writeJson(TMP_SITE_DATA, data);
-  } catch {
-    // ignore
+
+  const redis = getRedis();
+  if (redis) {
+    try {
+      await redis.set(REDIS_KEY_SITE, data);
+      return data;
+    } catch (e) {
+      console.error("Redis save failed, falling back to file:", e);
+    }
   }
+
+  // File fallback (dev/local)
   try {
     writeJson(SITE_DATA_FILE, data);
   } catch {
-    // Vercel read-only FS: /tmp write above handles persistence
+    // read-only FS: cache-only
   }
   return data;
 }

@@ -8,6 +8,6 @@ export async function GET() {
     return NextResponse.json({ error: "ログインが必要です" }, { status: 401 });
   }
 
-  const siteData = loadSiteData();
+  const siteData = await loadSiteData();
   return NextResponse.json(buildSiteResponse(siteData));
 }

@@ -17,9 +17,9 @@ export async function PUT(req: NextRequest) {
   const lineUrl = normalizeUrl(body.lineUrl);
   const zoomUrl = normalizeUrl(body.zoomUrl);
 
-  const siteData = loadSiteData();
+  const siteData = await loadSiteData();
   siteData.links = { discordUrl, lineUrl, zoomUrl };
-  const saved = saveSiteData(siteData);
+  const saved = await saveSiteData(siteData);
 
   return NextResponse.json({
     message: "導線リンクを更新しました",

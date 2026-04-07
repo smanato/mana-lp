@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const siteData = loadSiteData();
+  const siteData = await loadSiteData();
   const item = {
     id: crypto.randomUUID(),
     date: toDisplayDate(),
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
   };
 
   siteData.announcements = [item, ...siteData.announcements].slice(0, 30);
-  const saved = saveSiteData(siteData);
+  const saved = await saveSiteData(siteData);
 
   return NextResponse.json(
     { message: "お知らせを追加しました", announcements: saved.announcements },
@@ -79,7 +79,7 @@ export async function DELETE(req: NextRequest) {
     );
   }
 
-  const siteData = loadSiteData();
+  const siteData = await loadSiteData();
   const before = siteData.announcements.length;
   siteData.announcements = siteData.announcements.filter((a) => a.id !== id);
 
@@ -90,7 +90,7 @@ export async function DELETE(req: NextRequest) {
     );
   }
 
-  const saved = saveSiteData(siteData);
+  const saved = await saveSiteData(siteData);
   return NextResponse.json({
     message: "お知らせを削除しました",
     announcements: saved.announcements,

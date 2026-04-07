@@ -15,7 +15,7 @@ export async function PUT(req: NextRequest) {
   }
 
   const body = await req.json().catch(() => ({}));
-  const siteData = loadSiteData();
+  const siteData = await loadSiteData();
   const total = siteData.curriculum.length || 6;
   const source = Array.isArray(body.completedSessionIds)
     ? body.completedSessionIds
@@ -38,7 +38,7 @@ export async function PUT(req: NextRequest) {
 
   siteData.progress.completedSessionIds = ids;
   siteData.progress.updatedAt = new Date().toISOString();
-  const saved = saveSiteData(siteData);
+  const saved = await saveSiteData(siteData);
 
   return NextResponse.json({
     message: "進捗を更新しました",

@@ -15,7 +15,7 @@ export async function GET() {
       { status: 403 }
     );
 
-  const siteData = loadSiteData();
+  const siteData = await loadSiteData();
   return NextResponse.json({ documents: siteData.documents });
 }
 
@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const siteData = loadSiteData();
+  const siteData = await loadSiteData();
   const item = {
     id: crypto.randomUUID(),
     title,
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
   };
 
   siteData.documents = [item, ...siteData.documents];
-  const saved = saveSiteData(siteData);
+  const saved = await saveSiteData(siteData);
 
   return NextResponse.json(
     { message: "資料を追加しました", documents: saved.documents },
@@ -86,7 +86,7 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json({ error: "IDが必要です" }, { status: 400 });
   }
 
-  const siteData = loadSiteData();
+  const siteData = await loadSiteData();
   const before = siteData.documents.length;
   siteData.documents = siteData.documents.filter((d) => d.id !== id);
 
@@ -97,7 +97,7 @@ export async function DELETE(req: NextRequest) {
     );
   }
 
-  const saved = saveSiteData(siteData);
+  const saved = await saveSiteData(siteData);
   return NextResponse.json({
     message: "資料を削除しました",
     documents: saved.documents,
