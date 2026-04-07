@@ -610,12 +610,67 @@ export default function MemberDashboard({
           <div>
             <h2 className="panel__title">教材・テンプレート</h2>
             <div className="resource-stack reveal-stagger">
+              {/* 管理画面から追加された資料をリンクボタン付きで表示 */}
+              {site.documents && site.documents.map((doc) => (
+                <article
+                  className="resource-item"
+                  key={doc.id}
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    gap: 12,
+                  }}
+                >
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: 8,
+                        alignItems: "center",
+                        marginBottom: 4,
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      <span
+                        className="badge badge--qa"
+                        style={{ fontSize: 10 }}
+                      >
+                        {doc.category}
+                      </span>
+                      <h3>{doc.title}</h3>
+                    </div>
+                    {doc.description && <p>{doc.description}</p>}
+                  </div>
+                  <a
+                    href={doc.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn--primary"
+                    style={{
+                      flexShrink: 0,
+                      fontSize: 12,
+                      padding: "8px 16px",
+                    }}
+                  >
+                    開く →
+                  </a>
+                </article>
+              ))}
+              {/* 静的な教材・テンプレート一覧 */}
               {site.resources.map((r) => (
                 <article className="resource-item" key={r.id}>
                   <h3>{strip(r.title)}</h3>
                   <p>{strip(r.note)}</p>
                 </article>
               ))}
+              {/* 両方とも空の場合 */}
+              {(!site.documents || site.documents.length === 0) &&
+                site.resources.length === 0 && (
+                  <p style={{ color: "#94A3B8", fontSize: 13 }}>
+                    管理画面から資料を追加してください。
+                  </p>
+                )}
             </div>
           </div>
           <div>
@@ -724,29 +779,7 @@ export default function MemberDashboard({
           </section>
         )}
 
-        {/* ── Documents ───────────────────────────── */}
-        {site.documents && site.documents.length > 0 && (
-          <section className="panel reveal">
-            <h2 className="panel__title">配布資料</h2>
-            <div className="resource-stack reveal-stagger">
-              {site.documents.map((doc) => (
-                <article className="resource-item" key={doc.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div>
-                    <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 4 }}>
-                      <span className="badge badge--qa" style={{ fontSize: 10 }}>{doc.category}</span>
-                      <h3>{doc.title}</h3>
-                    </div>
-                    <p>{doc.description}</p>
-                  </div>
-                  <a href={doc.url} target="_blank" rel="noopener noreferrer"
-                    className="btn btn--secondary" style={{ flexShrink: 0, fontSize: 12, padding: '6px 14px' }}>
-                    開く
-                  </a>
-                </article>
-              ))}
-            </div>
-          </section>
-        )}
+        {/* ── 配布資料セクションは「教材・テンプレート」に統合済み ── */}
 
         {/* ── Support ──────────────────────────────── */}
         <section className="panel panel--support reveal">
