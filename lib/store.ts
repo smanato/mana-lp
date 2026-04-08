@@ -14,6 +14,7 @@ const USERS_FILE = path.join(DATA_DIR, "users.json");
 // - Otherwise → use local JSON file (dev/fallback)
 // ─────────────────────────────────────────────────────
 const REDIS_KEY_SITE = "mana-lp:site-data:v1";
+const REDIS_KEY_USERS = "mana-lp:users:v1";
 
 let redisClient: Redis | null = null;
 function getRedis(): Redis | null {
@@ -160,8 +161,31 @@ function createDefaultUsers(): UserRecord[] {
   ];
 }
 
-export function loadUsers(): UserRecord[] {
-  if (cachedUsers) return cachedUsers;
+export async function loadUsers(): Promise<UserRecord[]> {
+  const redis = getRedis();
+
+  // Redis path (production)
+  if (redis) {
+    try {
+      const stored = await redis.get<UserRecord[]>(REDIS_KEY_USERS);
+      if (stored && Array.isArray(stored) && stored.length > 0) {
+        cachedUsers = stored;
+        return stored;
+      }
+      // Seed Redis from file/defaults on first run
+      let seed = readJson<UserRecord[]>(USERS_FILE, []);
+      if (!Array.isArray(seed) || seed.length === 0) {
+        seed = createDefaultUsers();
+      }
+      await redis.set(REDIS_KEY_USERS, seed);
+      cachedUsers = seed;
+      return seed;
+    } catch (e) {
+      console.error("Redis load users failed, falling back to file:", e);
+    }
+  }
+
+  // File path (dev/fallback)
   let users = readJson<UserRecord[]>(USERS_FILE, []);
   if (!Array.isArray(users) || users.length === 0) {
     users = createDefaultUsers();
@@ -172,6 +196,28 @@ export function loadUsers(): UserRecord[] {
     }
   }
   cachedUsers = users;
+  return users;
+}
+
+export async function saveUsers(users: UserRecord[]): Promise<UserRecord[]> {
+  cachedUsers = users;
+
+  const redis = getRedis();
+  if (redis) {
+    try {
+      await redis.set(REDIS_KEY_USERS, users);
+      return users;
+    } catch (e) {
+      console.error("Redis save users failed, falling back to file:", e);
+    }
+  }
+
+  // File fallback
+  try {
+    writeJson(USERS_FILE, users);
+  } catch {
+    // read-only FS: cache-only
+  }
   return users;
 }
 

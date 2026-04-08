@@ -73,11 +73,13 @@ type TabId =
   | "images"
   | "archives"
   | "documents"
+  | "users"
   | "links"
   | "progress";
 
 const TABS: { id: TabId; label: string }[] = [
   { id: "overview", label: "概要" },
+  { id: "users", label: "会員管理" },
   { id: "announcements", label: "お知らせ管理" },
   { id: "images", label: "画像管理" },
   { id: "archives", label: "アーカイブ管理" },
@@ -85,6 +87,13 @@ const TABS: { id: TabId; label: string }[] = [
   { id: "links", label: "リンク設定" },
   { id: "progress", label: "進捗管理" },
 ];
+
+interface AdminUser {
+  id: string;
+  username: string;
+  name: string;
+  role: "admin" | "member";
+}
 
 const CATEGORY_LABELS: Record<string, string> = {
   template: "テンプレート",
@@ -470,6 +479,18 @@ export default function AdminDashboard({
 
   const [completedIds, setCompletedIds] = useState<number[]>([]);
 
+  // Users state
+  const [users, setUsers] = useState<AdminUser[]>([]);
+  const [newUserUsername, setNewUserUsername] = useState("");
+  const [newUserName, setNewUserName] = useState("");
+  const [newUserPassword, setNewUserPassword] = useState("");
+  const [newUserAutoPw, setNewUserAutoPw] = useState(true);
+  const [newUserRole, setNewUserRole] = useState<"admin" | "member">("member");
+  const [generatedCredential, setGeneratedCredential] = useState<{
+    username: string;
+    password: string;
+  } | null>(null);
+
   const flash = useCallback(
     (type: "success" | "error", text: string) => {
       setFeedback({ type, text });
@@ -495,9 +516,106 @@ export default function AdminDashboard({
     }
   }, [flash]);
 
+  const loadUsers = useCallback(async () => {
+    try {
+      const res = await fetch("/api/admin/users");
+      if (!res.ok) throw new Error("Failed to load users");
+      const json = await res.json();
+      setUsers(json.users || []);
+    } catch {
+      flash("error", "会員一覧の読み込みに失敗しました");
+    }
+  }, [flash]);
+
   useEffect(() => {
     loadData();
-  }, [loadData]);
+    loadUsers();
+  }, [loadData, loadUsers]);
+
+  // ─── User management ───
+  const handleAddUser = async () => {
+    if (!newUserUsername.trim() || !newUserName.trim()) {
+      flash("error", "ユーザー名と表示名を入力してください");
+      return;
+    }
+    if (!newUserAutoPw && newUserPassword.length < 8) {
+      flash("error", "パスワードは8文字以上で入力してください");
+      return;
+    }
+    try {
+      const res = await fetch("/api/admin/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: newUserUsername.trim(),
+          name: newUserName.trim(),
+          password: newUserAutoPw ? undefined : newUserPassword,
+          autoPassword: newUserAutoPw,
+          role: newUserRole,
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        flash("error", json.error || "会員追加に失敗しました");
+        return;
+      }
+      flash("success", "会員を追加しました");
+      if (json.password) {
+        setGeneratedCredential({
+          username: newUserUsername.trim(),
+          password: json.password,
+        });
+      }
+      setNewUserUsername("");
+      setNewUserName("");
+      setNewUserPassword("");
+      setNewUserRole("member");
+      loadUsers();
+    } catch {
+      flash("error", "会員追加に失敗しました");
+    }
+  };
+
+  const handleResetPassword = async (id: string, username: string) => {
+    if (!confirm(`${username} のパスワードをリセットしますか？`)) return;
+    try {
+      const res = await fetch("/api/admin/users", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, resetPassword: true }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        flash("error", json.error || "パスワードリセットに失敗しました");
+        return;
+      }
+      flash("success", "パスワードをリセットしました");
+      if (json.password) {
+        setGeneratedCredential({ username, password: json.password });
+      }
+      loadUsers();
+    } catch {
+      flash("error", "パスワードリセットに失敗しました");
+    }
+  };
+
+  const handleDeleteUser = async (id: string, username: string) => {
+    if (!confirm(`${username} を削除しますか？（元に戻せません）`)) return;
+    try {
+      const res = await fetch(`/api/admin/users?id=${encodeURIComponent(id)}`, {
+        method: "DELETE",
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        flash("error", json.error || "削除に失敗しました");
+        return;
+      }
+      flash("success", "会員を削除しました");
+      loadUsers();
+    } catch {
+      flash("error", "削除に失敗しました");
+    }
+  };
 
   const handleLogout = async () => {
     await fetch("/api/logout", { method: "POST" });
@@ -807,6 +925,298 @@ export default function AdminDashboard({
           {(!data?.announcements || data.announcements.length === 0) && (
             <div style={{ fontSize: 14, color: "#94A3B8", padding: "12px 0" }}>
               お知らせはありません
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  const renderUsers = () => {
+    const roleBadge = (role: "admin" | "member") => ({
+      display: "inline-block" as const,
+      padding: "2px 10px",
+      borderRadius: 999,
+      fontSize: 11,
+      fontWeight: 700,
+      background: role === "admin" ? "#FEE2E2" : "#DBEAFE",
+      color: role === "admin" ? "#B91C1C" : "#1D4ED8",
+    });
+
+    return (
+      <div>
+        <h2 style={styles.sectionTitle}>会員管理</h2>
+        {renderFeedback()}
+
+        {/* 生成されたパスワードを表示 */}
+        {generatedCredential && (
+          <div
+            style={{
+              ...styles.card,
+              marginBottom: 24,
+              borderLeft: "4px solid #DC2626",
+              background: "#FEF2F2",
+            }}
+          >
+            <div
+              style={{
+                fontSize: 13,
+                fontWeight: 700,
+                color: "#B91C1C",
+                marginBottom: 8,
+              }}
+            >
+              新しいパスワード（この画面を閉じると再表示できません）
+            </div>
+            <div
+              style={{
+                display: "flex",
+                gap: 16,
+                alignItems: "center",
+                flexWrap: "wrap",
+              }}
+            >
+              <div style={{ fontSize: 13, color: "#64748B" }}>
+                ユーザー名:{" "}
+                <span
+                  style={{
+                    fontFamily: "monospace",
+                    fontSize: 14,
+                    fontWeight: 700,
+                    color: "#0F172A",
+                  }}
+                >
+                  {generatedCredential.username}
+                </span>
+              </div>
+              <div style={{ fontSize: 13, color: "#64748B" }}>
+                パスワード:{" "}
+                <span
+                  style={{
+                    fontFamily: "monospace",
+                    fontSize: 14,
+                    fontWeight: 700,
+                    color: "#0F172A",
+                  }}
+                >
+                  {generatedCredential.password}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard.writeText(
+                    `ユーザー名: ${generatedCredential.username}\nパスワード: ${generatedCredential.password}`
+                  );
+                  flash("success", "クリップボードにコピーしました");
+                }}
+                style={{
+                  ...styles.btnPrimary,
+                  padding: "6px 12px",
+                  fontSize: 12,
+                }}
+              >
+                コピー
+              </button>
+              <button
+                type="button"
+                onClick={() => setGeneratedCredential(null)}
+                style={{
+                  ...styles.btnSecondary,
+                  padding: "6px 12px",
+                  fontSize: 12,
+                }}
+              >
+                閉じる
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* 新規追加フォーム */}
+        <div style={{ ...styles.card, marginBottom: 24 }}>
+          <div
+            style={{
+              fontSize: 15,
+              fontWeight: 600,
+              color: "#0F172A",
+              marginBottom: 14,
+            }}
+          >
+            会員を追加
+          </div>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: 12,
+            }}
+          >
+            <div>
+              <label style={styles.label}>ユーザー名（ログイン用）</label>
+              <input
+                type="text"
+                value={newUserUsername}
+                onChange={(e) => setNewUserUsername(e.target.value)}
+                placeholder="例: tanaka01"
+                style={styles.input}
+              />
+            </div>
+            <div>
+              <label style={styles.label}>表示名</label>
+              <input
+                type="text"
+                value={newUserName}
+                onChange={(e) => setNewUserName(e.target.value)}
+                placeholder="例: 田中太郎"
+                style={styles.input}
+              />
+            </div>
+            <div>
+              <label style={styles.label}>権限</label>
+              <select
+                value={newUserRole}
+                onChange={(e) =>
+                  setNewUserRole(e.target.value as "admin" | "member")
+                }
+                style={styles.input}
+              >
+                <option value="member">会員（member）</option>
+                <option value="admin">管理者（admin）</option>
+              </select>
+            </div>
+            <div>
+              <label style={styles.label}>パスワード</label>
+              <div style={{ display: "flex", gap: 8 }}>
+                <input
+                  type="text"
+                  value={newUserAutoPw ? "（自動生成されます）" : newUserPassword}
+                  onChange={(e) => setNewUserPassword(e.target.value)}
+                  placeholder="8文字以上"
+                  disabled={newUserAutoPw}
+                  style={{
+                    ...styles.input,
+                    background: newUserAutoPw ? "#F1F5F9" : "#FFFFFF",
+                  }}
+                />
+              </div>
+              <label
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                  marginTop: 6,
+                  fontSize: 12,
+                  color: "#64748B",
+                  cursor: "pointer",
+                }}
+              >
+                <input
+                  type="checkbox"
+                  checked={newUserAutoPw}
+                  onChange={(e) => setNewUserAutoPw(e.target.checked)}
+                />
+                パスワードを自動生成する
+              </label>
+            </div>
+          </div>
+          <div style={{ marginTop: 16 }}>
+            <button
+              type="button"
+              onClick={handleAddUser}
+              style={styles.btnPrimary}
+            >
+              会員を追加
+            </button>
+          </div>
+        </div>
+
+        {/* 既存会員一覧 */}
+        <div style={styles.card}>
+          <div
+            style={{
+              fontSize: 15,
+              fontWeight: 600,
+              color: "#0F172A",
+              marginBottom: 14,
+            }}
+          >
+            登録済み会員 ({users.length})
+          </div>
+          {users.length === 0 ? (
+            <p style={{ color: "#94A3B8", fontSize: 13 }}>
+              まだ会員が登録されていません。
+            </p>
+          ) : (
+            <div style={{ display: "grid", gap: 8 }}>
+              {users.map((u) => (
+                <div
+                  key={u.id}
+                  style={{
+                    border: "1px solid #E2E8F0",
+                    borderRadius: 8,
+                    padding: "12px 16px",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    gap: 12,
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <div style={{ flex: 1, minWidth: 200 }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: 8,
+                        alignItems: "center",
+                        marginBottom: 4,
+                      }}
+                    >
+                      <span style={roleBadge(u.role)}>
+                        {u.role === "admin" ? "ADMIN" : "MEMBER"}
+                      </span>
+                      <strong style={{ fontSize: 14, color: "#0F172A" }}>
+                        {u.name}
+                      </strong>
+                    </div>
+                    <div
+                      style={{
+                        fontSize: 12,
+                        color: "#64748B",
+                        fontFamily: "monospace",
+                      }}
+                    >
+                      @{u.username}
+                    </div>
+                  </div>
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <button
+                      type="button"
+                      onClick={() => handleResetPassword(u.id, u.username)}
+                      style={{
+                        ...styles.btnSecondary,
+                        fontSize: 12,
+                        padding: "6px 12px",
+                      }}
+                    >
+                      PWリセット
+                    </button>
+                    {u.id !== initialUser.id && (
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteUser(u.id, u.username)}
+                        style={{
+                          ...styles.btnDanger,
+                          fontSize: 12,
+                          padding: "6px 12px",
+                        }}
+                      >
+                        削除
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </div>
@@ -1497,6 +1907,7 @@ export default function AdminDashboard({
 
   const tabContent: Record<TabId, () => React.ReactNode> = {
     overview: renderOverview,
+    users: renderUsers,
     announcements: renderAnnouncements,
     images: renderImages,
     archives: renderArchives,

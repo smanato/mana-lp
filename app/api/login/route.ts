@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const users = loadUsers();
+  const users = await loadUsers();
   const candidate = users.find((u) => u.username === username);
   if (!candidate || !verifyPassword(password, candidate.salt, candidate.hash)) {
     return NextResponse.json(
