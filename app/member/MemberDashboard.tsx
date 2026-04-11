@@ -194,6 +194,45 @@ export default function MemberDashboard({
   const contentRef = useScrollReveal(!!site);
   useScrollShadow();
 
+  /* ── Password Change Modal ── */
+  const [pwModalOpen, setPwModalOpen] = useState(false);
+  const [pwCurrent, setPwCurrent] = useState("");
+  const [pwNew, setPwNew] = useState("");
+  const [pwConfirm, setPwConfirm] = useState("");
+  const [pwSubmitting, setPwSubmitting] = useState(false);
+
+  async function handlePasswordChange(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (pwNew.length < 8) {
+      flash("新しいパスワードは8文字以上で入力してください", "error");
+      return;
+    }
+    if (pwNew !== pwConfirm) {
+      flash("新しいパスワードが一致しません", "error");
+      return;
+    }
+    setPwSubmitting(true);
+    try {
+      await api("/api/me/password", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          currentPassword: pwCurrent,
+          newPassword: pwNew,
+        }),
+      });
+      flash("パスワードを変更しました", "success");
+      setPwCurrent("");
+      setPwNew("");
+      setPwConfirm("");
+      setPwModalOpen(false);
+    } catch (err) {
+      flash(err instanceof Error ? err.message : "変更失敗", "error");
+    } finally {
+      setPwSubmitting(false);
+    }
+  }
+
   /* ── Data Fetching ── */
 
   const loadSite = useCallback(async () => {
@@ -336,6 +375,15 @@ export default function MemberDashboard({
           </p>
           <button
             className="btn btn--ghost"
+            onClick={() => setPwModalOpen(true)}
+            type="button"
+            style={{ padding: "6px 14px", fontSize: 13 }}
+            title="パスワード変更"
+          >
+            パスワード変更
+          </button>
+          <button
+            className="btn btn--ghost"
             onClick={logout}
             type="button"
             style={{ padding: "6px 14px", fontSize: 13 }}
@@ -349,6 +397,157 @@ export default function MemberDashboard({
           )}
         </div>
       </header>
+
+      {/* ── Password Change Modal ── */}
+      {pwModalOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setPwModalOpen(false);
+          }}
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(15, 23, 42, 0.45)",
+            backdropFilter: "blur(6px)",
+            WebkitBackdropFilter: "blur(6px)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+            padding: 20,
+            animation: "fadeIn 0.2s ease-out",
+          }}
+        >
+          <div
+            style={{
+              background: "#FFFFFF",
+              borderRadius: 16,
+              padding: 32,
+              width: "100%",
+              maxWidth: 440,
+              boxShadow: "0 20px 60px rgba(0,0,0,0.2)",
+              border: "1px solid #E2E8F0",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: 8,
+              }}
+            >
+              <h2
+                style={{
+                  fontSize: 20,
+                  fontWeight: 700,
+                  color: "#0F172A",
+                  letterSpacing: "-0.01em",
+                  margin: 0,
+                }}
+              >
+                パスワード変更
+              </h2>
+              <button
+                type="button"
+                onClick={() => setPwModalOpen(false)}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "#94A3B8",
+                  fontSize: 24,
+                  lineHeight: 1,
+                  cursor: "pointer",
+                  padding: 0,
+                  width: 28,
+                  height: 28,
+                }}
+                aria-label="閉じる"
+              >
+                ×
+              </button>
+            </div>
+            <p
+              style={{
+                fontSize: 13,
+                color: "#64748B",
+                marginTop: 0,
+                marginBottom: 24,
+                lineHeight: 1.6,
+              }}
+            >
+              現在のパスワードを入力し、新しいパスワード（8文字以上）を設定してください。
+            </p>
+
+            <form
+              onSubmit={handlePasswordChange}
+              style={{ display: "grid", gap: 16 }}
+            >
+              <label className="form-field">
+                <span>現在のパスワード</span>
+                <input
+                  type="password"
+                  value={pwCurrent}
+                  onChange={(e) => setPwCurrent(e.target.value)}
+                  required
+                  autoComplete="current-password"
+                  placeholder="現在のパスワード"
+                />
+              </label>
+              <label className="form-field">
+                <span>新しいパスワード</span>
+                <input
+                  type="password"
+                  value={pwNew}
+                  onChange={(e) => setPwNew(e.target.value)}
+                  required
+                  minLength={8}
+                  autoComplete="new-password"
+                  placeholder="8文字以上"
+                />
+              </label>
+              <label className="form-field">
+                <span>新しいパスワード（確認）</span>
+                <input
+                  type="password"
+                  value={pwConfirm}
+                  onChange={(e) => setPwConfirm(e.target.value)}
+                  required
+                  minLength={8}
+                  autoComplete="new-password"
+                  placeholder="もう一度入力"
+                />
+              </label>
+              <div
+                style={{
+                  display: "flex",
+                  gap: 8,
+                  justifyContent: "flex-end",
+                  marginTop: 8,
+                }}
+              >
+                <button
+                  type="button"
+                  className="btn btn--ghost"
+                  onClick={() => setPwModalOpen(false)}
+                  disabled={pwSubmitting}
+                >
+                  キャンセル
+                </button>
+                <button
+                  type="submit"
+                  className="btn btn--primary"
+                  disabled={pwSubmitting}
+                >
+                  {pwSubmitting ? "変更中..." : "パスワードを変更"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {msg && (
         <p className={`global-message global-message--${msg.kind}`}>
