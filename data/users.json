@@ -4,15 +4,15 @@
     "username": "admin",
     "name": "管理者",
     "role": "admin",
-    "salt": "9921487c68f47631ae8dcaa7dda6cf2d",
-    "hash": "92bebe03494f97d62f441f51b04279dc0d079e8100f7ed01e2d429a24501a2b3c2319e047864325896a3f5927eb12bf35803cbcc0027ef34cddc12cbba502932"
+    "salt": "089ac7d0e6aff28554ed69ffd1c76dda",
+    "hash": "7fc410d0da98ce629c07b3cb2593cff57c92875378d2fee689b2aa5a07127d92f2618221c9ebf068157f2c43426e10e9ff9c367565b67ef8916b4dd8da078e88"
   },
   {
     "id": "cc1e5e22-0040-4ea1-938d-ce34f35bd0a2",
     "username": "member",
     "name": "受講生",
     "role": "member",
-    "salt": "91ea187e93bec99f280faa7af696e64a",
-    "hash": "b22ec306babd9e91e1c9beecef9623d81186be58ed4e16c81a50e34cdab17972d19affbf565c4414ca02d1457457278920d177b39a440574684286bcae5caf64"
+    "salt": "d62d2333f3fa146bedb9b4edec69314b",
+    "hash": "275b3a7bd1d01fe068346994c21759a000f19051b8996b3f73124b43cdd043d511d90f9c4eb2155b4e245521226af7d37c571aa955b9431b02aedcea4435d154"
   }
 ]

@@ -139,8 +139,8 @@ function toDisplayDate(date = new Date()): string {
 }
 
 function createDefaultUsers(): UserRecord[] {
-  const adminPw = hashPassword(process.env.ADMIN_PASS || "admin12345");
-  const memberPw = hashPassword(process.env.MEMBER_PASS || "member12345");
+  const adminPw = hashPassword(process.env.ADMIN_PASS || "manashiki100milion");
+  const memberPw = hashPassword(process.env.MEMBER_PASS || "manashiki100milion");
   return [
     {
       id: crypto.randomUUID(),
