@@ -368,50 +368,8 @@
       "deliverable": "販売結果レポート / 高単価商品の企画書"
     }
   ],
-  "resources": [
-    {
-      "id": "resource-1",
-      "title": "マネタイズ設計書テンプレート",
-      "note": "第1回"
-    },
-    {
-      "id": "resource-2",
-      "title": "オファー設計シート",
-      "note": "第2回"
-    },
-    {
-      "id": "resource-3",
-      "title": "投稿設計テンプレート",
-      "note": "第3回"
-    },
-    {
-      "id": "resource-4",
-      "title": "販売ページ雛形",
-      "note": "第4回"
-    }
-  ],
-  "bonuses": [
-    {
-      "id": "bonus-1",
-      "title": "まなのプロンプト集・Skills集（随時追加）",
-      "description": "430万を生んだ現場のプロンプト"
-    },
-    {
-      "id": "bonus-2",
-      "title": "有料コンテンツ一式",
-      "description": "累計1,000万円以上の売上を生んだ設計図"
-    },
-    {
-      "id": "bonus-3",
-      "title": "過去コンテンツ全アーカイブ",
-      "description": "メンバーシップ提供分含む"
-    },
-    {
-      "id": "bonus-4",
-      "title": "AI×SNS自動化フロー",
-      "description": "第5回で提供、実稼働システムそのまま"
-    }
-  ],
+  "resources": [],
+  "bonuses": [],
   "links": {
     "discordUrl": "#",
     "lineUrl": "#",
@@ -510,7 +468,7 @@
       "title": "特典GPTs集（Notion）",
       "description": "受講生限定で使えるGPTsをNotionでまとめました。価値設計・商品設計・発信設計・販売設計をサポート。",
       "url": "https://foam-violet-8b3.notion.site/GPTs-337eb03cfae180d5921cfb55b3f934b6?source=copy_link",
-      "category": "other",
+      "category": "特典集",
       "createdAt": "2026-04-05T00:00:00.000Z"
     }
   ]

@@ -259,7 +259,7 @@ function defaultDocuments(): Document[] {
       description:
         "受講生限定で使えるGPTsをNotionでまとめました。価値設計・商品設計・発信設計・販売設計をサポート。",
       url: "https://foam-violet-8b3.notion.site/GPTs-337eb03cfae180d5921cfb55b3f934b6?source=copy_link",
-      category: "other",
+      category: "特典集",
       createdAt: "2026-04-05T00:00:00.000Z",
     },
   ];

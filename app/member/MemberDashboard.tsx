@@ -804,13 +804,12 @@ export default function MemberDashboard({
           </div>
         </section>
 
-        {/* ── Resources + Bonuses ──────────────────── */}
-        <section id="resources" className="panel two-column reveal">
-          <div>
-            <h2 className="panel__title">教材・テンプレート</h2>
+        {/* ── Documents (教材・特典) ─────────────────── */}
+        {site.documents && site.documents.length > 0 && (
+          <section id="resources" className="panel reveal">
+            <h2 className="panel__title">教材・特典</h2>
             <div className="resource-stack reveal-stagger">
-              {/* 管理画面から追加された資料をリンクボタン付きで表示 */}
-              {site.documents && site.documents.map((doc) => (
+              {site.documents.map((doc) => (
                 <article
                   className="resource-item"
                   key={doc.id}
@@ -856,34 +855,9 @@ export default function MemberDashboard({
                   </a>
                 </article>
               ))}
-              {/* 静的な教材・テンプレート一覧 */}
-              {site.resources.map((r) => (
-                <article className="resource-item" key={r.id}>
-                  <h3>{strip(r.title)}</h3>
-                  <p>{strip(r.note)}</p>
-                </article>
-              ))}
-              {/* 両方とも空の場合 */}
-              {(!site.documents || site.documents.length === 0) &&
-                site.resources.length === 0 && (
-                  <p style={{ color: "#94A3B8", fontSize: 13 }}>
-                    管理画面から資料を追加してください。
-                  </p>
-                )}
             </div>
-          </div>
-          <div>
-            <h2 className="panel__title">豪華特典</h2>
-            <div className="bonus-stack reveal-stagger">
-              {site.bonuses.map((b) => (
-                <article className="bonus-item" key={b.id}>
-                  <h3>{strip(b.title)}</h3>
-                  <p>{strip(b.description)}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* ── Announcements ────────────────────────── */}
         <section id="announcements" className="panel reveal">
