@@ -598,6 +598,130 @@ export default function MemberDashboard({
           </div>
         </section>
 
+        {/* ── Archives (Hero直後に配置: 最優先で見える場所) ─ */}
+        {site.archives && site.archives.length > 0 && (
+          <section className="panel reveal" style={{ borderTop: "3px solid #DC2626" }}>
+            <h2 className="panel__title">
+              セミナーアーカイブ
+              <span
+                style={{
+                  marginLeft: 10,
+                  fontSize: 11,
+                  fontWeight: 700,
+                  padding: "2px 10px",
+                  borderRadius: 999,
+                  background: "#FEE2E2",
+                  color: "#B91C1C",
+                  letterSpacing: "0.04em",
+                }}
+              >
+                {site.archives.length} 本
+              </span>
+            </h2>
+            <div
+              className="curriculum-grid reveal-stagger"
+              style={{ gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))" }}
+            >
+              {site.archives.map((archive) => {
+                const videoId =
+                  archive.youtubeUrl?.match(/(?:youtu\.be\/|v=)([^&?]+)/)?.[1] ||
+                  "";
+                return (
+                  <article className="curriculum-card" key={archive.id}>
+                    <div
+                      className="curriculum-card__media"
+                      style={{ position: "relative", minHeight: 180 }}
+                    >
+                      {videoId ? (
+                        <a
+                          href={archive.youtubeUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <img
+                            src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
+                            alt={archive.title}
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "cover",
+                            }}
+                          />
+                          <div
+                            style={{
+                              position: "absolute",
+                              inset: 0,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              background: "rgba(0,0,0,0.15)",
+                            }}
+                          >
+                            <div
+                              style={{
+                                width: 56,
+                                height: 56,
+                                borderRadius: "50%",
+                                background: "rgba(220,38,38,0.9)",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                boxShadow: "0 8px 24px rgba(220,38,38,0.4)",
+                              }}
+                            >
+                              <div
+                                style={{
+                                  width: 0,
+                                  height: 0,
+                                  borderLeft: "18px solid white",
+                                  borderTop: "11px solid transparent",
+                                  borderBottom: "11px solid transparent",
+                                  marginLeft: 4,
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </a>
+                      ) : (
+                        <div className="placeholder">サムネイル未取得</div>
+                      )}
+                    </div>
+                    <div className="curriculum-card__body">
+                      <h3>{archive.title}</h3>
+                      <p
+                        style={{
+                          display: "flex",
+                          gap: 12,
+                          marginTop: 8,
+                          fontSize: 12,
+                          color: "#94A3B8",
+                        }}
+                      >
+                        {archive.date && <span>{archive.date}</span>}
+                        {archive.duration && <span>{archive.duration}</span>}
+                      </p>
+                      <a
+                        href={archive.youtubeUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn--primary"
+                        style={{
+                          marginTop: 12,
+                          display: "inline-flex",
+                          fontSize: 13,
+                          padding: "8px 16px",
+                        }}
+                      >
+                        ▶ アーカイブを視聴する
+                      </a>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
         {/* ── Progress ─────────────────────────────── */}
         <section className="panel reveal">
           <h2 className="panel__title">進捗トラッカー</h2>
@@ -905,52 +1029,6 @@ export default function MemberDashboard({
             ))}
           </div>
         </section>
-
-        {/* ── Archives ─────────────────────────────── */}
-        {site.archives && site.archives.length > 0 && (
-          <section className="panel reveal">
-            <h2 className="panel__title">セミナーアーカイブ</h2>
-            <div className="curriculum-grid reveal-stagger">
-              {site.archives.map((archive) => {
-                // Extract YouTube video ID for thumbnail
-                const videoId = archive.youtubeUrl?.match(/(?:youtu\.be\/|v=)([^&?]+)/)?.[1] || "";
-                return (
-                  <article className="curriculum-card" key={archive.id}>
-                    <div className="curriculum-card__media" style={{ position: 'relative', minHeight: 180 }}>
-                      {videoId ? (
-                        <a href={archive.youtubeUrl} target="_blank" rel="noopener noreferrer">
-                          <img
-                            src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
-                            alt={archive.title}
-                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                          />
-                          <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.15)' }}>
-                            <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'rgba(220,38,38,0.9)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                              <div style={{ width: 0, height: 0, borderLeft: '18px solid white', borderTop: '11px solid transparent', borderBottom: '11px solid transparent', marginLeft: 4 }} />
-                            </div>
-                          </div>
-                        </a>
-                      ) : (
-                        <div className="placeholder">サムネイル未取得</div>
-                      )}
-                    </div>
-                    <div className="curriculum-card__body">
-                      <h3>{archive.title}</h3>
-                      <p style={{ display: 'flex', gap: 12, marginTop: 8, fontSize: 12, color: '#94A3B8' }}>
-                        <span>{archive.date}</span>
-                        {archive.duration && <span>{archive.duration}</span>}
-                      </p>
-                      <a href={archive.youtubeUrl} target="_blank" rel="noopener noreferrer"
-                        className="btn btn--zoom" style={{ marginTop: 12, display: 'inline-flex' }}>
-                        アーカイブを視聴する
-                      </a>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-          </section>
-        )}
 
         {/* ── 配布資料セクションは「教材・テンプレート」に統合済み ── */}
 

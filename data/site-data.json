@@ -434,8 +434,10 @@
     }
   },
   "progress": {
-    "completedSessionIds": [],
-    "updatedAt": null
+    "completedSessionIds": [
+      1
+    ],
+    "updatedAt": "2026-04-21T07:37:57.470678Z"
   },
   "announcements": [
     {
@@ -453,7 +455,26 @@
       "badge": "INFO"
     }
   ],
-  "archives": [],
+  "archives": [
+    {
+      "id": "60e55dc0-6e7b-4a3e-b01f-16d1dbc1aeef",
+      "sessionNo": 1,
+      "title": "第1回セミナー｜価値設計",
+      "youtubeUrl": "https://youtu.be/aWzu3Y6-Svc",
+      "date": "2026-04-12",
+      "duration": "",
+      "createdAt": "2026-04-21T07:37:57.470678Z"
+    },
+    {
+      "id": "88ee8dac-c9ad-4486-83a5-4403ddba7071",
+      "sessionNo": 1,
+      "title": "第1回 質問会",
+      "youtubeUrl": "https://youtu.be/kvasCVgh6Ds",
+      "date": "",
+      "duration": "",
+      "createdAt": "2026-04-21T07:37:57.470678Z"
+    }
+  ],
   "documents": [
     {
       "id": "default-gdrive-materials",
