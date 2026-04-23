@@ -435,9 +435,10 @@
   },
   "progress": {
     "completedSessionIds": [
-      1
+      1,
+      2
     ],
-    "updatedAt": "2026-04-21T07:37:57.470678Z"
+    "updatedAt": "2026-04-23T13:50:08.215905Z"
   },
   "announcements": [
     {
@@ -457,10 +458,19 @@
   ],
   "archives": [
     {
+      "id": "9ad97a2c-814c-4b1f-834f-9e9f5e947043",
+      "sessionNo": 2,
+      "title": "第2回セミナー｜商品設計",
+      "youtubeUrl": "https://youtu.be/-PPMfHa68Wo",
+      "date": "2026-04-23",
+      "duration": "",
+      "createdAt": "2026-04-23T13:50:08.215905Z"
+    },
+    {
       "id": "60e55dc0-6e7b-4a3e-b01f-16d1dbc1aeef",
       "sessionNo": 1,
       "title": "第1回セミナー｜価値設計",
-      "youtubeUrl": "https://youtu.be/aWzu3Y6-Svc",
+      "youtubeUrl": "https://youtu.be/kvasCVgh6Ds",
       "date": "2026-04-12",
       "duration": "",
       "createdAt": "2026-04-21T07:37:57.470678Z"
@@ -469,7 +479,7 @@
       "id": "88ee8dac-c9ad-4486-83a5-4403ddba7071",
       "sessionNo": 1,
       "title": "第1回 質問会",
-      "youtubeUrl": "https://youtu.be/kvasCVgh6Ds",
+      "youtubeUrl": "https://youtu.be/aWzu3Y6-Svc",
       "date": "",
       "duration": "",
       "createdAt": "2026-04-21T07:37:57.470678Z"
