@@ -173,8 +173,8 @@
       "sessions": [
         {
           "no": 7,
-          "date": "5/21",
-          "weekday": "木",
+          "date": "5/15",
+          "weekday": "金",
           "time": "21:00",
           "type": "セミナー③",
           "kind": "seminar",
@@ -501,6 +501,46 @@
       "url": "https://foam-violet-8b3.notion.site/GPTs-337eb03cfae180d5921cfb55b3f934b6?source=copy_link",
       "category": "特典集",
       "createdAt": "2026-04-05T00:00:00.000Z"
+    },
+    {
+      "id": "3b15fdc7-7d65-49d5-b85b-3e6fab22604c",
+      "title": "網羅性特典作成GPTs",
+      "description": "網羅性のある無料特典を作るためのGPTs。完全網羅型の特典設計に活用。",
+      "url": "https://chatgpt.com/g/g-69f8257dd99c8191af7a3388e6c57e84-wang-luo-xing-wu-liao-te-dian-zuo-rerugpts",
+      "category": "特典GPTs",
+      "createdAt": "2026-05-13T05:22:43.026864Z"
+    },
+    {
+      "id": "af1d87a3-344d-427e-8bf4-bfa55141f1c9",
+      "title": "即効性特典作成GPT",
+      "description": "「すぐにできる！」を勧められる即効性特典を作るGPT。読者にすぐ価値を届ける特典設計。",
+      "url": "https://chatgpt.com/g/g-69f893f2c58c81919e0f2a73d8a6b7fa-sukunitekiru-woquan-merarerute-dian-zuo-cheng-gpt",
+      "category": "特典GPTs",
+      "createdAt": "2026-05-13T05:22:43.026864Z"
+    },
+    {
+      "id": "512f235d-4377-4d7c-9268-6cb9ddf48606",
+      "title": "意外性特典作成GPTs",
+      "description": "意外性のあるネタを重視した特典作成GPTs。「想像を超える」差別化を実現。",
+      "url": "https://chatgpt.com/g/g-69f894509790819190f2cea1ae04fe23-yi-wai-xing-noarunetawozhong-shi-sitate-dian-zuo-cheng-gpts",
+      "category": "特典GPTs",
+      "createdAt": "2026-05-13T05:22:43.026864Z"
+    },
+    {
+      "id": "bf9be4fb-c902-4bab-93aa-85b9f75db0b0",
+      "title": "公式LINE挨拶文GPTs",
+      "description": "公式LINE登録直後の挨拶文を最適化するGPTs。リスト育成・ファン化に活用。",
+      "url": "https://chatgpt.com/g/g-69f894c3e70c8191aa87eb53c28167d2-lineaisatumetusesigpts",
+      "category": "特典GPTs",
+      "createdAt": "2026-05-13T05:22:43.026864Z"
+    },
+    {
+      "id": "e19dec94-3717-4771-9df6-41901d5f7d89",
+      "title": "固定ポスト作成GPTs",
+      "description": "プロフィール固定ポストを設計するGPTs。プロフ流入→公式LINE誘導の導線設計に。",
+      "url": "https://chatgpt.com/g/g-69f89528345c8191b54e35cfc8f13815-gu-ding-hosutozuo-cheng-gpts",
+      "category": "特典GPTs",
+      "createdAt": "2026-05-13T05:22:43.026864Z"
     }
   ]
 }
