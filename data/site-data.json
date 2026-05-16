@@ -436,9 +436,11 @@
   "progress": {
     "completedSessionIds": [
       1,
-      2
+      2,
+      3,
+      4
     ],
-    "updatedAt": "2026-05-16T02:04:49.318590Z"
+    "updatedAt": "2026-05-16T02:45:29.670684Z"
   },
   "announcements": [
     {
@@ -465,6 +467,15 @@
       "date": "2026-05-28",
       "duration": "",
       "createdAt": "2026-05-16T02:04:49.318590Z"
+    },
+    {
+      "id": "aa5598f6-2c37-4870-9dd6-92361c5c21a4",
+      "sessionNo": 3,
+      "title": "第3回セミナー｜発信設計",
+      "youtubeUrl": "https://youtu.be/MNq4BfJmRZw",
+      "date": "2026-05-15",
+      "duration": "",
+      "createdAt": "2026-05-16T02:45:29.670684Z"
     },
     {
       "id": "9ad97a2c-814c-4b1f-834f-9e9f5e947043",
