@@ -438,7 +438,7 @@
       1,
       2
     ],
-    "updatedAt": "2026-04-23T13:50:08.215905Z"
+    "updatedAt": "2026-05-16T02:04:49.318590Z"
   },
   "announcements": [
     {
@@ -457,6 +457,15 @@
     }
   ],
   "archives": [
+    {
+      "id": "0ed289f6-77f7-492b-9b00-9ce9539ec8b6",
+      "sessionNo": 4,
+      "title": "第4回セミナー｜販売設計",
+      "youtubeUrl": "https://youtu.be/8LTgJF3kq8Y",
+      "date": "2026-05-28",
+      "duration": "",
+      "createdAt": "2026-05-16T02:04:49.318590Z"
+    },
     {
       "id": "9ad97a2c-814c-4b1f-834f-9e9f5e947043",
       "sessionNo": 2,
