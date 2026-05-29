@@ -438,9 +438,10 @@
       1,
       2,
       3,
-      4
+      4,
+      5
     ],
-    "updatedAt": "2026-05-16T02:45:29.670684Z"
+    "updatedAt": "2026-05-29T02:31:28.066793Z"
   },
   "announcements": [
     {
@@ -459,6 +460,15 @@
     }
   ],
   "archives": [
+    {
+      "id": "c4f9b51c-9f91-4976-8322-efd697654ce5",
+      "sessionNo": 5,
+      "title": "第5回セミナー｜AI×SNS仕組み化",
+      "youtubeUrl": "https://youtu.be/7r2kOT_VGDk",
+      "date": "2026-06-04",
+      "duration": "",
+      "createdAt": "2026-05-29T02:31:28.066793Z"
+    },
     {
       "id": "0ed289f6-77f7-492b-9b00-9ce9539ec8b6",
       "sessionNo": 4,
