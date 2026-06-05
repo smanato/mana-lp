@@ -439,9 +439,10 @@
       2,
       3,
       4,
-      5
+      5,
+      6
     ],
-    "updatedAt": "2026-05-29T02:31:28.066793Z"
+    "updatedAt": "2026-06-05T07:58:15.563209Z"
   },
   "announcements": [
     {
@@ -460,6 +461,15 @@
     }
   ],
   "archives": [
+    {
+      "id": "6aa051b3-9e1c-4b33-9f26-aa9953a8acc4",
+      "sessionNo": 6,
+      "title": "第6回セミナー｜ローンチ＆高単価",
+      "youtubeUrl": "https://youtu.be/_2mqQT0KQkA",
+      "date": "2026-06-04",
+      "duration": "",
+      "createdAt": "2026-06-05T07:58:15.563209Z"
+    },
     {
       "id": "c4f9b51c-9f91-4976-8322-efd697654ce5",
       "sessionNo": 5,
